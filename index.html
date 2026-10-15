@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CitiBank of America </title>
+<style>
+:root{--bg:#eef2f7;--box:#fff;--card:#f8fafc;--txt:#0f172a;--sub:#64748b;--inbg:#fff;--inbd:#cbd5e1;--pri:#0056b3;--prid:#003d80;--div:#e2e8f0;--sh:rgba(0,0,0,.08);--grn:#16a34a;--red:#dc2626;--gold:#f59e0b}
+body.dark{--bg:#0a0a0a;--box:#141414;--card:#1c1c1c;--txt:#f5f5f5;--sub:#94a3b8;--inbg:#1f1f1f;--inbd:#333;--pri:#4d9fff;--prid:#2b7de0;--div:#2a2a2a;--sh:rgba(0,0,0,.6);--grn:#22c55e;--red:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0;transition:background .3s,color .3s,border-color .3s}
+body{font-family:-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--txt);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:16px}
+.app{background:var(--box);border-radius:20px;box-shadow:0 12px 48px var(--sh);width:100%;max-width:440px;padding:26px 20px 32px;position:relative;overflow:hidden}
+.tog{position:absolute;top:16px;background:var(--card);border:none;font-size:18px;cursor:pointer;padding:8px 12px;color:var(--txt);border-radius:10px;z-index:5;font-family:inherit}
+h1{color:var(--pri);font-size:26px;text-align:center;letter-spacing:2px;margin-bottom:6px;font-weight:800}
+h2{color:var(--pri);font-size:18px;margin-bottom:12px;font-weight:700}
+.sub{text-align:center;color:var(--sub);font-size:13px;margin-bottom:22px;line-height:1.5}
+label{display:block;font-size:11px;color:var(--sub);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+input,select,textarea{width:100%;padding:13px 14px;margin-bottom:14px;background:var(--inbg);border:1.5px solid var(--inbd);border-radius:10px;color:var(--txt);font-size:14px;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri)}
+.btn{width:100%;padding:14px;background:var(--pri);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;font-family:inherit}
+.btn:active{background:var(--prid)}
+.btn.ghost{background:transparent;color:var(--pri);border:2px solid var(--pri);margin-top:10px}
+.btn.ghost:active{background:var(--pri);color:#fff}
+.btn.out{background:transparent;color:var(--red);border:2px solid var(--red);margin-top:16px}
+.btn.out:active{background:var(--red);color:#fff}
+.btn.grn{background:var(--grn)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;user-select:none}
+.pw{position:relative;margin-bottom:14px}
+.pw input{margin-bottom:0;padding-right:44px}
+.hide{display:none}
+.div{display:flex;align-items:center;margin:22px 0;color:var(--sub);font-size:11px;letter-spacing:1px}
+.div::before,.div::after{content:"";flex:1;height:1px;background:var(--div)}
+.div span{padding:0 12px}
+.alt{text-align:center;font-size:13px;color:var(--sub);margin-bottom:6px}
+.lock-icon{font-size:60px;text-align:center;margin-bottom:16px}
+.tab-bar{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:6px;border-bottom:1px solid var(--div)}
+.tab{padding:8px 14px;font-size:12px;font-weight:700;background:transparent;color:var(--sub);border:none;border-radius:8px;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tab.on{background:var(--pri);color:#fff}
+/* FROZEN BANNER */
+.frozen-banner{background:linear-gradient(135deg,#dc2626 0%,#991b1b 100%);color:#fff;padding:12px 16px;border-radius:12px;margin-bottom:14px;text-align:center;font-weight:700;font-size:13px;letter-spacing:.3px;box-shadow:0 6px 20px rgba(220,38,38,.3);animation:pulseFrozen 2s ease-in-out infinite}
+@keyframes pulseFrozen{0%,100%{opacity:1}50%{opacity:.85}}
+.demo-banner{background:#fef3c7;color:#92400e;padding:8px 12px;border-radius:8px;font-size:10px;text-align:center;font-weight:700;margin-bottom:14px;border:1px solid #fcd34d}
+body.dark .demo-banner{background:#78350f;color:#fde68a;border-color:#92400e}
+</style>
+</head>
+<body>
+  <style>
+.bal{background:linear-gradient(135deg,#0056b3 0%,#003d80 100%);color:#fff;padding:24px;border-radius:18px;margin-bottom:20px;box-shadow:0 12px 32px rgba(0,86,179,.35);position:relative;overflow:hidden}
+body.dark .bal{background:linear-gradient(135deg,#1e5fa8 0%,#0a2a55 100%)}
+.bal::after{content:"";position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:rgba(255,255,255,.08);border-radius:50%}
+.bal::before{content:"";position:absolute;bottom:-40px;left:-30px;width:120px;height:120px;background:rgba(255,255,255,.05);border-radius:50%}
+.bal small{opacity:.85;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1}
+.bal h2{font-size:34px;margin:8px 0;letter-spacing:.5px;position:relative;z-index:1;color:#fff}
+.bal .note{opacity:.8;font-size:11px;position:relative;z-index:1}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.qbtn{background:var(--card);border:1.5px solid var(--div);border-radius:12px;padding:14px 6px;cursor:pointer;text-align:center;color:var(--txt);font-size:11px;font-weight:700;font-family:inherit;position:relative}
+.qbtn:active{background:var(--pri);color:#fff;border-color:var(--pri)}
+.qbtn .ic{font-size:22px;display:block;margin-bottom:5px}
+.qbtn.locked{opacity:.5;cursor:not-allowed}
+.qbtn.locked::after{content:"🧊";position:absolute;top:4px;right:6px;font-size:12px}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--div)}
+.head h3{font-size:16px;color:var(--txt)}
+.head .who{font-size:11px;color:var(--sub);margin-top:3px}
+.chip{width:auto;padding:7px 14px;font-size:12px;font-weight:600;background:transparent;color:var(--sub);border:1.5px solid var(--inbd);border-radius:20px;cursor:pointer;white-space:nowrap;font-family:inherit}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.txn{display:flex;justify-content:space-between;align-items:center;padding:12px 4px;border-bottom:1px solid var(--div)}
+.txn:last-child{border-bottom:none}
+.txn .ic{width:38px;height:38px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--div);flex-shrink:0;margin-right:12px}
+.txn .info{flex:1;min-width:0}
+.txn .n{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txn .dt{font-size:11px;color:var(--sub);margin-top:2px}
+.txn .amt{font-size:14px;font-weight:700;white-space:nowrap;margin-left:8px}
+.g{color:var(--grn)}.r{color:var(--red)}
+.mn{font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;padding-left:4px}
+.pg{width:auto;padding:6px 12px;font-size:12px;font-weight:600;background:var(--card);color:var(--txt);border:1px solid var(--inbd);border-radius:6px;cursor:pointer;font-family:inherit}
+.pg.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.pg:disabled{opacity:.4}
+.card{background:var(--card);border:1.5px solid var(--div);border-radius:12px;padding:14px;margin-bottom:14px}
+.card .lbl{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:6px}
+.atm{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 12px 32px rgba(0,0,0,.35);position:relative;overflow:hidden;color:#fff}
+.atm::after{content:"";position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);border-radius:50%}
+.atm-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;position:relative;z-index:1}
+.atm-bank{font-size:15px;font-weight:800;letter-spacing:2px}
+.atm-chip{font-size:26px}
+.atm-num{font-size:17px;font-weight:700;letter-spacing:2.5px;margin-bottom:16px;font-family:"Courier New",monospace;position:relative;z-index:1}
+.atm-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:14px;position:relative;z-index:1}
+.atm-lbl{font-size:9px;opacity:.7;letter-spacing:1px;margin-bottom:3px}
+.atm-val{font-size:12px;font-weight:700;letter-spacing:.5px}
+.atm-bottom{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:800;letter-spacing:2px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.15);padding-top:12px}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-btn{width:auto;padding:10px 14px;background:var(--card);border:1.5px solid var(--div);border-radius:8px;cursor:pointer;font-size:14px;font-family:inherit;color:var(--txt)}
+.info-row{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--div);font-size:13px;align-items:center;gap:10px}
+.info-row:last-child{border-bottom:none}
+.info-row .k{color:var(--sub);font-weight:600}
+.info-row .v{color:var(--txt);font-weight:700;text-align:right}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.badge.g{background:#dcfce7;color:#166534}
+.badge.r{background:#fee2e2;color:#991b1b}
+body.dark .badge.g{background:#14532d;color:#86efac}
+body.dark .badge.r{background:#7f1d1d;color:#fecaca}
+.contact{display:flex;align-items:center;gap:12px;padding:14px 6px;border-bottom:1px solid var(--div);cursor:pointer}
+.contact:last-child{border-bottom:none}
+.contact .cicon{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--div);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.contact .cinfo{flex:1}
+.contact .ctitle{font-size:13px;font-weight:700}
+.contact .csub{font-size:11px;color:var(--sub);margin-top:2px}
+.prog{background:var(--div);height:10px;border-radius:5px;overflow:hidden;margin-top:6px}
+.prog .fill{height:100%;border-radius:5px}
+  </style>
+  <div class="app">
+<button class="tog" onclick="togTheme()" id="togBtn" style="right:16px">🌙</button>
+
+<!-- GATE -->
+<div id="pGate">
+<div class="lock-icon">🔒</div>
+<h1>LOCKED</h1>
+<p class="sub">Enter the access password to continue.</p>
+<label>Access Password</label>
+<div class="pw">
+<input type="password" id="gatePass" placeholder="8-digit number" inputmode="numeric" maxlength="8">
+<span class="eye" onclick="togPw('gatePass',this)">👁️</span>
+</div>
+<button class="btn" onclick="checkGate()">Unlock</button>
+</div>
+
+<!-- LOGIN -->
+<div id="pLogin" class="hide">
+<h1 id="brandTitle">CITIBank</h1>
+<p class="sub">Sign in to your bank accept</p>
+<label>Username</label>
+<input type="text" id="u" placeholder="Enter username">
+<label>Password</label>
+<div class="pw">
+<input type="password" id="p" placeholder="8-digit password" inputmode="numeric" maxlength="8">
+<span class="eye" onclick="togPw('p',this)">👁️</span>
+</div>
+<button class="btn" onclick="goLogin()" id="loginBtn">Login</button>
+</div>
+
+<!-- 2FA -->
+<div id="pVerify" class="hide">
+<h1>🔐 VERIFY</h1>
+<p class="sub">Enter the 6-digit code</p>
+<div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,0)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,1)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,2)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,3)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,4)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+<input type="text" maxlength="1" inputmode="numeric" oninput="nx(this,5)" style="width:46px;height:54px;text-align:center;font-size:22px;font-weight:bold;padding:0;margin:0">
+</div>
+<button class="btn" onclick="goVerify()">Verify</button>
+<button class="btn ghost" onclick="show('pLogin')" style="margin-top:14px">Back</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pDash" class="hide">
+<div class="demo-banner">⚠️ we are sorry for the mistake. Please bear with me. We’re currently working on the account and doing our best to get everything corrected. I apologize for any inconvenience this may have caused let this message say we are sorry.</div>
+<div class="frozen-banner">🧊 ACCOUNT FROZEN — No transfers allowed</div>
+
+<div class="head">
+<div style="display:flex;align-items:center;gap:12px">
+<div id="headAvatar" style="width:44px;height:44px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;overflow:hidden;background-size:cover;background-position:center">KT</div>
+<div>
+<h3 id="welcome">Welcome</h3>
+<div class="who" id="who">Citibank · •••• 4829</div>
+</div>
+</div>
+</div>
+
+<div class="tab-bar">
+<button class="tab on" onclick="tab(this,'tHome')">🏠 Home</button>
+<button class="tab" onclick="tab(this,'tCard')">💳 Card</button>
+<button class="tab" onclick="tab(this,'tProfile')">👤 Profile</button>
+<button class="tab" onclick="tab(this,'tSupport')">☎️ Support</button>
+<button class="tab" onclick="openMore(this)">➕ More</button>
+</div>
+
+<!-- HOME -->
+<div id="tHome">
+<div class="bal">
+<small>Total Balance (Frozen)</small>
+<h2>$367,253.60</h2>
+<small class="note">No withdrawals allowed while frozen</small>
+</div>
+<div class="quick">
+<button class="qbtn locked" onclick="frozenAlert()"><span class="ic">📤</span>Send</button>
+<button class="qbtn locked" onclick="frozenAlert()"><span class="ic">📥</span>Receive</button>
+<button class="qbtn locked" onclick="frozenAlert()"><span class="ic">🔁</span>Transfer</button>
+</div>
+<label>Search</label>
+<input type="text" id="search" placeholder="🔍 Search transactions...">
+<label>Filter</label>
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px">
+<button class="chip on" onclick="setF(this,'all')">All</button>
+<button class="chip" onclick="setF(this,'credit')">Credits</button>
+<button class="chip" onclick="setF(this,'debit')">Debits</button>
+<button class="chip" onclick="setF(this,'2026')">2026</button>
+<button class="chip" onclick="setF(this,'2025')">2025</button>
+<button class="chip" onclick="setF(this,'2024')">2024</button>
+<button class="chip" onclick="setF(this,'2023')">2023</button>
+<button class="chip" onclick="setF(this,'2022')">2022</button>
+</div>
+<label>Transaction History</label>
+<div id="list" style="max-height:340px;overflow-y:auto;border:1px solid var(--div);border-radius:12px;padding:6px 12px;background:var(--card)"></div>
+<div style="display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap" id="pages"></div>
+</div>
+
+<!-- CARD -->
+<div id="tCard" class="hide">
+<div class="atm">
+<div class="atm-top"><span class="atm-bank">CITI Bank</span><span class="atm-chip">💳</span></div>
+<div class="atm-num" id="atmNum">4829 1736 5520 4829</div>
+<div class="atm-row">
+<div><div class="atm-lbl">CARD HOLDER</div><div class="atm-val">Jung Ho seok</div></div>
+<div><div class="atm-lbl">EXPIRES</div><div class="atm-val">09/28</div></div>
+<div><div class="atm-lbl">CVV</div><div class="atm-val" id="atmCvv">•••</div></div>
+</div>
+<div class="atm-bottom"><span>VISA</span><span style="font-style:italic;font-weight:800">Debit</span></div>
+</div>
+<div class="card">
+<div class="lbl">🔑 Customer Key (PIN)</div>
+<div class="key-row">
+<input type="password" id="pinBox" value="0832" maxlength="4" inputmode="numeric" style="margin:0;text-align:center;letter-spacing:8px;font-size:20px;font-weight:700">
+<button class="key-btn" onclick="togPin()" id="pinToggle">👁️</button>
+</div>
+</div>
+<div class="card">
+<div class="lbl">Card Details</div>
+<div class="info-row"><span class="k">Card Type</span><span class="v">Visa Debit (Frozen)</span></div>
+<div class="info-row"><span class="k">Status</span><span class="v"><span class="badge r">FROZEN</span></span></div>
+<div class="info-row"><span class="k">Daily Limit</span><span class="v">$0.00 (blocked)</span></div>
+</div>
+</div>
+
+<!-- PROFILE -->
+<div id="tProfile" class="hide">
+<h2>My Profile</h2>
+<div class="card" style="text-align:center">
+<div id="profileAvatar" style="width:110px;height:110px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;margin:0 auto 14px;overflow:hidden;background-size:cover;background-position:center;border:4px solid var(--div)">KT</div>
+<input type="file" id="photoInput" accept="image/*" style="display:none" onchange="loadPhoto(event)">
+<button class="btn ghost" style="margin:0;font-size:13px;padding:10px" onclick="document.getElementById('photoInput').click()">📷 Upload Photo</button>
+<button class="btn ghost" style="margin-top:8px;font-size:13px;padding:10px" onclick="removePhoto()">🗑️ Remove Photo</button>
+</div>
+<div class="card">
+<div class="lbl">Personal Information</div>
+<label>Full Name</label>
+<input type="text" id="profName" value="Jung Ho seok">
+<label>Email</label>
+<input type="email" id="profEmail" value="JungHoseok@gmail.com">
+<label>Phone</label>
+<input type="tel" id="profPhone" value="+1 (555) 217-4829">
+<label>Address</label>
+<input type="text" id="profAddr" value="742 Evergreen Terrace, New York, NY 10001">
+<button class="btn" onclick="saveProfile()">💾 Save Profile</button>
+</div>
+<div class="card">
+<div class="lbl">Account Summary</div>
+<div class="info-row"><span class="k">Account</span><span class="v">•••• 4829</span></div>
+<div class="info-row"><span class="k">Type</span><span class="v">Checking</span></div>
+<div class="info-row"><span class="k">Member Since</span><span class="v">March 2022</span></div>
+<div class="info-row"><span class="k">Status</span><span class="v"><span class="badge r">FROZEN</span></span></div>
+</div>
+</div>
+
+<!-- SUPPORT -->
+<div id="tSupport" class="hide">
+<h2>Customer Care</h2>
+<div class="card">
+<div class="contact"><div class="cicon">📞</div><div class="cinfo"><div class="ctitle">Call Us 24/7</div><div class="csub">+1 (555) 010-0</div></div></div>
+<div class="contact"><div class="cicon">💬</div><div class="cinfo"><div class="ctitle">Live Chat</div><div class="csub">Customer support</div></div></div>
+<div class="contact"><div class="cicon">✉️</div><div class="cinfo"><div class="ctitle">Email</div><div class="csub">support@example.com (Customer)</div></div></div>
+</div>
+</div>
+
+<!-- MORE MENU -->
+<div id="pMore" class="hide">
+<h2>More Options</h2>
+<div class="card">
+<div class="contact" onclick="jumpTo('tBill')"><div class="cicon">🧾</div><div class="cinfo"><div class="ctitle">Bill Pay</div><div class="csub">Frozen — disabled</div></div></div>
+<div class="contact" onclick="jumpTo('tSave')"><div class="cicon">🎯</div><div class="cinfo"><div class="ctitle">Savings Goals</div><div class="csub">Frozen — disabled</div></div></div>
+<div class="contact" onclick="jumpTo('tLoan')"><div class="cicon">🏦</div><div class="cinfo"><div class="ctitle">Loans</div><div class="csub">Frozen — disabled</div></div></div>
+<div class="contact" onclick="jumpTo('tSettings')"><div class="cicon">⚙️</div><div class="cinfo"><div class="ctitle">Settings</div><div class="csub">View only</div></div></div>
+</div>
+<button class="btn ghost" onclick="show('pDash')">Back</button>
+</div>
+
+<!-- BILL PAY -->
+<div id="tBill" class="hide">
+<h2>Bill Pay</h2>
+<div class="card">
+<div class="lbl">Upcoming Bills</div>
+<div class="info-row"><span class="k">🏠 Rent - Sunset Apts</span><span class="v">$2,900 · Due Oct 1</span></div>
+<div class="info-row"><span class="k">💡 Electric - ConEd</span><span class="v">$155 · Due Oct 8</span></div>
+<div class="info-row"><span class="k">📡 Internet - Comcast</span><span class="v">$89 · Due Oct 12</span></div>
+</div>
+<button class="btn" style="background:var(--red)" onclick="frozenAlert()">🧊 Account Frozen — Cannot Pay</button>
+<button class="btn ghost" onclick="show('pDash')" style="margin-top:12px">Back</button>
+</div>
+
+<!-- GOALS -->
+<div id="tSave" class="hide">
+<h2>Savings Goals</h2>
+<div class="card"><div class="lbl">🎯 Emergency Fund</div><div class="prog"><div class="fill" style="background:var(--grn);width:75%"></div></div><div class="info-row" style="margin-top:8px"><span class="k">Saved</span><span class="v">$7,500 / $10,000</span></div></div>
+<div class="card"><div class="lbl">🏖️ Vacation Fund</div><div class="prog"><div class="fill" style="background:var(--pri);width:40%"></div></div><div class="info-row" style="margin-top:8px"><span class="k">Saved</span><span class="v">$2,000 / $5,000</span></div></div>
+<button class="btn ghost" onclick="show('pDash')" style="margin-top:12px">Back</button>
+</div>
+
+<!-- LOANS -->
+<div id="tLoan" class="hide">
+<h2>Loans & Credit</h2>
+<div class="card">
+<div class="lbl">My Active Loans</div>
+<div class="info-row"><span class="k">Auto Loan</span><span class="v">$18,500 · 24 mo left</span></div>
+<div class="info-row"><span class="k">Next Payment</span><span class="v">Oct 5 · $820</span></div>
+<div class="info-row"><span class="k">Status</span><span class="v"><span class="badge r">FROZEN</span></span></div>
+</div>
+<button class="btn ghost" onclick="show('pDash')" style="margin-top:12px">Back</button>
+</div>
+
+<!-- SETTINGS -->
+<div id="tSettings" class="hide">
+<h2>Settings</h2>
+<div class="card">
+<div class="lbl">🔒 Security</div>
+<div class="info-row"><span class="k">Two-Factor Auth</span><span class="v"><span class="badge g">ENABLED</span></span></div>
+<div class="info-row"><span class="k">Account Status</span><span class="v"><span class="badge r">FROZEN</span></span></div>
+</div>
+<div class="card">
+<div class="lbl">🎨 Appearance</div>
+<div class="info-row"><span class="k">Dark Mode</span><span class="v"><button class="key-btn" onclick="togTheme()">Toggle</button></span></div>
+</div>
+<div class="card">
+<div class="lbl">ℹ️ About</div>
+<div class="info-row"><span class="k">App Version</span><span class="v"> v1.0</span></div>
+<div class="info-row"><span class="k">Type</span><span class="v">Fictional</span></div>
+</div>
+</div>
+
+<button class="btn out" onclick="goLogout()">Log Out</button>
+</div>
+
+</div>
+<script>
+/* ---------- FIXED CODES ---------- */
+var GATE_PASSWORD = "08025366";
+var VALID_USER    = "JungHoseok";
+var VALID_PASS    = "53917406";
+var VALID_2FA     = "081253";
+
+/* ---------- ACCOUNT ---------- */
+var HOLDER = "Jung Ho-seok";
+var NUM    = "Citi Bank · •••• 4829";
+
+var BANKS = ["Citi Bank","Chase Bank","Bank of America","Wells Fargo","Capital One","US Bank","PNC Bank","TD Bank"];
+var PEOPLE = [
+["Michael Johnson","4271 8830 5521"],
+["Sarah Williams","6390 1124 7782"],
+["David Brown","8102 4471 3356"],
+["Emily Davis","5540 9932 1108"],
+["Robert Martinez","3398 2276 8814"],
+["Jennifer Wilson","7715 6640 2293"],
+["William Taylor","2204 8891 4470"],
+["Linda Anderson","9963 1157 6628"]
+];
+function bk(i){return BANKS[i%BANKS.length]}
+function pr(i){return PEOPLE[i%PEOPLE.length]}
+function ds(i){var p=pr(i);return "Transfer from "+bk(i)+" - "+p[0]+" (A/C "+p[1]+")"}
+
+/* ---------- TRANSACTIONS 2022-2026 ---------- */
+var TX=[
+{d:"2026-09-10",t:ds(0),a:20000,i:"🏦"},
+{d:"2026-09-08",t:"Salary Deposit",a:13500,i:"💼"},
+{d:"2026-09-05",t:"Whole Foods Market",a:-260,i:"🛒"},
+{d:"2026-09-02",t:ds(1),a:10000,i:"🏦"},
+{d:"2026-08-28",t:"Rent Payment - Sunset Apartments",a:-2900,i:"🏠"},
+{d:"2026-08-25",t:ds(2),a:5000,i:"🏦"},
+{d:"2026-08-15",t:"Dividend - Vanguard ETF",a:520,i:"📈"},
+{d:"2026-08-12",t:ds(3),a:1000,i:"🏦"},
+{d:"2026-08-01",t:"Amazon.com",a:-210,i:"📦"},
+{d:"2026-07-28",t:ds(4),a:600,i:"🏦"},
+{d:"2026-07-20",t:"Freelance Project - Design",a:3800,i:"💻"},
+{d:"2026-07-15",t:ds(5),a:200,i:"🏦"},
+{d:"2026-07-12",t:"Shell Gas Station",a:-82,i:"⛽"},
+{d:"2026-07-05",t:ds(6),a:100,i:"🏦"},
+{d:"2026-06-30",t:"Netflix Subscription",a:-17.99,i:"🎬"},
+{d:"2026-06-22",t:ds(7),a:50,i:"🏦"},
+{d:"2026-06-15",t:"Salary Deposit",a:13500,i:"💼"},
+{d:"2026-05-20",t:ds(0),a:20000,i:"🏦"},
+{d:"2026-05-10",t:"Tax Refund - IRS",a:3100,i:"🏛️"},
+{d:"2026-04-15",t:ds(1),a:5000,i:"🏦"},
+{d:"2026-04-05",t:"Salary Deposit",a:13500,i:"💼"},
+{d:"2026-03-18",t:ds(2),a:10000,i:"🏦"},
+{d:"2026-03-08",t:"Gym Membership",a:-65,i:"🏋️"},
+{d:"2026-02-10",t:ds(4),a:600,i:"🏦"},
+{d:"2026-01-20",t:"Stock Sale - Tesla",a:5600,i:"📊"},
+{d:"2026-01-05",t:ds(7),a:50,i:"🏦"},
+{d:"2025-12-20",t:ds(0),a:20000,i:"🏦"},
+{d:"2025-12-15",t:"Year-End Bonus",a:9500,i:"🎉"},
+{d:"2025-11-25",t:ds(1),a:5000,i:"🏦"},
+{d:"2025-11-10",t:ds(2),a:10000,i:"🏦"},
+{d:"2025-11-05",t:"Salary Deposit",a:12500,i:"💼"},
+{d:"2025-10-20",t:"Vacation - Hilton Hotel",a:-1550,i:"🏨"},
+{d:"2025-09-25",t:ds(4),a:600,i:"🏦"},
+{d:"2025-09-10",t:ds(5),a:200,i:"🏦"},
+{d:"2025-08-15",t:ds(7),a:50,i:"🏦"},
+{d:"2025-07-28",t:ds(0),a:20000,i:"🏦"},
+{d:"2025-07-15",t:"Freelance Project - Web Dev",a:4500,i:"💻"},
+{d:"2025-06-20",t:"Salary Deposit",a:12500,i:"💼"},
+{d:"2025-05-20",t:ds(2),a:5000,i:"🏦"},
+{d:"2025-05-05",t:ds(3),a:1000,i:"🏦"},
+{d:"2025-04-10",t:"Tax Refund - IRS",a:2650,i:"🏛️"},
+{d:"2025-03-15",t:"Salary Deposit",a:12500,i:"💼"},
+{d:"2025-02-14",t:"Valentine's Dinner",a:-240,i:"💐"},
+{d:"2025-01-15",t:ds(6),a:100,i:"🏦"},
+{d:"2024-12-20",t:ds(0),a:20000,i:"🏦"},
+{d:"2024-12-15",t:"Year-End Bonus",a:8500,i:"🎉"},
+{d:"2024-11-10",t:ds(2),a:10000,i:"🏦"},
+{d:"2024-11-05",t:"Salary Deposit",a:12000,i:"💼"},
+{d:"2024-10-22",t:ds(3),a:1000,i:"🏦"},
+{d:"2024-09-25",t:ds(4),a:600,i:"🏦"},
+{d:"2024-08-15",t:ds(7),a:50,i:"🏦"},
+{d:"2024-07-28",t:ds(0),a:20000,i:"🏦"},
+{d:"2024-06-20",t:"Salary Deposit",a:12000,i:"💼"},
+{d:"2024-05-20",t:ds(2),a:5000,i:"🏦"},
+{d:"2024-04-10",t:"Tax Refund - IRS",a:2450,i:"🏛️"},
+{d:"2024-03-15",t:"Salary Deposit",a:12000,i:"💼"},
+{d:"2024-02-14",t:"Valentine's Dinner",a:-220,i:"💐"},
+{d:"2024-01-05",t:ds(7),a:50,i:"🏦"},
+{d:"2023-12-22",t:ds(0),a:20000,i:"🏦"},
+{d:"2023-12-20",t:"Christmas Bonus",a:6000,i:"🎉"},
+{d:"2023-11-08",t:ds(2),a:10000,i:"🏦"},
+{d:"2023-11-15",t:"Salary Deposit",a:11500,i:"💼"},
+{d:"2023-10-15",t:ds(5),a:600,i:"🏦"},
+{d:"2023-08-05",t:ds(0),a:20000,i:"🏦"},
+{d:"2023-07-15",t:ds(1),a:10000,i:"🏦"},
+{d:"2023-06-05",t:"Salary Deposit",a:11500,i:"💼"},
+{d:"2023-05-15",t:ds(3),a:1000,i:"🏦"},
+{d:"2023-03-15",t:"Salary Deposit",a:11500,i:"💼"},
+{d:"2022-12-15",t:ds(0),a:20000,i:"🏦"},
+{d:"2022-12-22",t:"Christmas Bonus",a:5000,i:"🎉"},
+{d:"2022-11-25",t:ds(1),a:10000,i:"🏦"},
+{d:"2022-11-20",t:"Salary Deposit",a:11000,i:"💼"},
+{d:"2022-09-25",t:ds(3),a:1000,i:"🏦"},
+{d:"2022-06-25",t:ds(0),a:20000,i:"🏦"},
+{d:"2022-05-25",t:ds(2),a:5000,i:"🏦"},
+{d:"2022-04-25",t:ds(2),a:10000,i:"🏦"},
+{d:"2022-03-15",t:ds(5),a:600,i:"🏦"},
+{d:"2022-02-10",t:ds(6),a:100,i:"🏦"}
+];
+TX.sort(function(a,b){return new Date(b.d)-new Date(a.d)});
+
+var filter="all",search="",page=1,PER=10;
+
+/* ---------- THEME ---------- */
+function togTheme(){
+document.body.classList.toggle("dark");
+var b=document.getElementById("togBtn");
+if(document.body.classList.contains("dark")){b.textContent="☀️";localStorage.setItem("theme","dark")}
+else{b.textContent="🌙";localStorage.setItem("theme","light")}
+}
+
+window.addEventListener("load",function(){
+try{
+if(sessionStorage.getItem("gateOK")==="yes"){
+document.getElementById("pGate").classList.add("hide");
+document.getElementById("pLogin").classList.remove("hide");
+}
+}catch(e){}
+if(localStorage.getItem("theme")==="dark"){document.body.classList.add("dark");document.getElementById("togBtn").textContent="☀️"}
+var ph=localStorage.getItem("profilePhoto");
+if(ph){var a1=document.getElementById("profileAvatar"),a2=document.getElementById("headAvatar");if(a1){a1.style.backgroundImage="url("+ph+")";a1.textContent=""}if(a2){a2.style.backgroundImage="url("+ph+")";a2.textContent=""}}
+});
+
+/* ---------- NAVIGATION ---------- */
+function show(id){
+["pGate","pLogin","pVerify","pDash","pMore"].forEach(function(p){var el=document.getElementById(p);if(el)el.classList.add("hide")});
+var t=document.getElementById(id);if(t)t.classList.remove("hide");
+}
+function tab(el,id){
+document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on")});
+el.classList.add("on");
+["tHome","tCard","tProfile","tSupport","tBill","tSave","tLoan","tSettings"].forEach(function(t){document.getElementById(t).classList.add("hide")});
+document.getElementById(id).classList.remove("hide");
+show("pDash");
+}
+function openMore(el){
+document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on")});
+el.classList.add("on");
+show("pMore");
+}
+function jumpTo(tabId){
+show("pDash");
+["tHome","tCard","tProfile","tSupport","tBill","tSave","tLoan","tSettings"].forEach(function(t){document.getElementById(t).classList.add("hide")});
+document.getElementById(tabId).classList.remove("hide");
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- PASSWORD EYE ---------- */
+function togPw(id,el){
+var i=document.getElementById(id);
+if(i.type==="password"){i.type="text";el.textContent="🙈"}else{i.type="password";el.textContent="👁️"}
+}
+
+/* ---------- GATE ---------- */
+function checkGate(){
+var input=document.getElementById("gatePass").value;
+if(input===GATE_PASSWORD){
+document.getElementById("pGate").classList.add("hide");
+document.getElementById("pLogin").classList.remove("hide");
+document.getElementById("gatePass").value="";
+try{sessionStorage.setItem("gateOK","yes")}catch(e){}
+}else{
+alert("❌ Wrong access password.");
+document.getElementById("gatePass").value="";
+document.getElementById("gatePass").focus();
+}
+}
+
+/* ---------- LOGIN ---------- */
+function goLogin(){
+var u=document.getElementById("u").value.trim();
+var pw=document.getElementById("p").value;
+if(u!==VALID_USER){alert("❌ Wrong username.");return}
+if(pw!==VALID_PASS){alert("❌ Wrong password.");return}
+var b=document.getElementById("loginBtn");
+b.textContent="Signing in...";
+setTimeout(function(){
+b.textContent="Login";
+document.getElementById("welcome").textContent="Welcome, "+HOLDER;
+document.getElementById("who").textContent=NUM;
+show("pVerify");
+},700);
+}
+
+/* ---------- 2FA ---------- */
+function nx(el,idx){
+var boxes=document.querySelectorAll("#pVerify input");
+el.value=el.value.replace(/[^0-9]/g,"");
+if(el.value&&idx<boxes.length-1)boxes[idx+1].focus();
+}
+function goVerify(){
+var boxes=document.querySelectorAll("#pVerify input");
+var code="";boxes.forEach(function(b){code+=b.value});
+if(code!==VALID_2FA){
+alert("❌ Wrong verification code.");
+boxes.forEach(function(b){b.value=""});
+boxes[0].focus();
+return;
+}
+boxes.forEach(function(b){b.value=""});
+render();
+show("pDash");
+}
+
+/* ---------- LOGOUT ---------- */
+function goLogout(){
+document.getElementById("u").value="";
+document.getElementById("p").value="";
+filter="all";search="";page=1;
+document.getElementById("search").value="";
+document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on")});
+document.querySelectorAll(".chip")[0].classList.add("on");
+document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("on")});
+document.querySelectorAll(".tab")[0].classList.add("on");
+try{sessionStorage.removeItem("gateOK")}catch(e){}
+show("pGate");
+}
+
+/* ---------- FROZEN ALERT ---------- */
+function frozenAlert(){
+alert("🧊 ACCOUNT FROZEN\n\nThis account has been frozen due to a technical issue.\n\nNo transfers, sends, or receives are allowed.\n\n(Please be patient we're working on it and will update you shortly)");
+}
+
+/* ---------- ATM CARD ---------- */
+function togPin(){
+var i=document.getElementById("pinBox");
+var b=document.getElementById("pinToggle");
+if(i.type==="password"){i.type="text";b.textContent="🙈"}else{i.type="password";b.textContent="👁️"}
+}
+
+/* ---------- PROFILE PHOTO ---------- */
+function loadPhoto(event){
+var file=event.target.files[0];
+if(!file)return;
+if(file.size>3*1024*1024){alert("⚠️ Image too large. Choose under 3MB.");return}
+var reader=new FileReader();
+reader.onload=function(e){
+var data=e.target.result;
+var a1=document.getElementById("profileAvatar");
+var a2=document.getElementById("headAvatar");
+a1.style.backgroundImage="url("+data+")";a1.textContent="";
+a2.style.backgroundImage="url("+data+")";a2.textContent="";
+try{localStorage.setItem("profilePhoto",data)}catch(err){}
+alert("✅ Profile photo updated!");
+};
+reader.readAsDataURL(file);
+}
+function removePhoto(){
+localStorage.removeItem("profilePhoto");
+var a1=document.getElementById("profileAvatar");
+var a2=document.getElementById("headAvatar");
+a1.style.backgroundImage="";a1.textContent="KT";
+a2.style.backgroundImage="";a2.textContent="KT";
+document.getElementById("photoInput").value="";
+alert("🗑️ Profile photo removed.");
+}
+function saveProfile(){
+var n=document.getElementById("profName").value;
+if(!n){alert("Name cannot be empty.");return}
+alert("✅ Profile saved (demo).");
+}
+  /* ---------- FILTERS ---------- */
+function setF(el,f){
+document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on")});
+el.classList.add("on");
+filter=f;page=1;render();
+}
+function resetFilter(){
+document.getElementById("search").value="";
+search="";filter="all";page=1;
+document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on")});
+document.querySelectorAll(".chip")[0].classList.add("on");
+render();
+}
+document.getElementById("search").addEventListener("input",function(){
+search=this.value.toLowerCase();page=1;render();
+});
+
+/* ---------- HELPERS ---------- */
+function fm(n){
+var s=n<0?"-":"+";
+return s+"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fd(d){
+var dt=new Date(d+"T00:00:00");
+var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+return m[dt.getMonth()]+" "+dt.getDate()+", "+dt.getFullYear();
+}
+function ml(d){
+var dt=new Date(d+"T00:00:00");
+var m=["January","February","March","April","May","June","July","August","September","October","November","December"];
+return m[dt.getMonth()]+" "+dt.getFullYear();
+}
+function getF(){
+var l=TX;
+if(filter==="credit")l=l.filter(function(x){return x.a>0});
+else if(filter==="debit")l=l.filter(function(x){return x.a<0});
+else if(["2022","2023","2024","2025","2026"].indexOf(filter)>-1)l=l.filter(function(x){return x.d.indexOf(filter)===0});
+if(search)l=l.filter(function(x){return x.t.toLowerCase().indexOf(search)>-1});
+return l;
+}
+
+/* ---------- RENDER ---------- */
+function render(){
+var list=document.getElementById("list");
+if(!list)return;
+list.innerHTML="";
+var f=getF();
+if(f.length===0){list.innerHTML='<p style="text-align:center;padding:20px;color:var(--sub)">No transactions found.</p>';document.getElementById("pages").innerHTML="";return}
+var total=Math.ceil(f.length/PER);
+if(page>total)page=total;if(page<1)page=1;
+var start=(page-1)*PER;
+var items=f.slice(start,start+PER);
+var cur="";
+items.forEach(function(t){
+var g=ml(t.d);
+if(g!==cur){cur=g;var h=document.createElement("div");h.className="mn";h.textContent=g;list.appendChild(h)}
+var cls=t.a<0?"r":"g";
+var row=document.createElement("div");
+row.className="txn";
+row.innerHTML='<div class="ic">'+t.i+'</div><div class="info"><div class="n">'+t.t+'</div><div class="dt">'+fd(t.d)+'</div></div><div class="amt '+cls+'">'+fm(t.a)+'</div>';
+list.appendChild(row);
+});
+var pg=document.getElementById("pages");
+pg.innerHTML="";
+if(total<=1)return;
+var prev=document.createElement("button");
+prev.className="pg";prev.textContent="◀ Prev";prev.disabled=(page===1);
+prev.onclick=function(){page--;render()};
+pg.appendChild(prev);
+var s=Math.max(1,page-2),e=Math.min(total,s+4);
+if(e-s<4)s=Math.max(1,e-4);
+for(var i=s;i<=e;i++){(function(n){
+var b=document.createElement("button");
+b.className="pg"+(n===page?" on":"");b.textContent=n;
+b.onclick=function(){page=n;render()};
+pg.appendChild(b);
+})(i);}
+var nxt=document.createElement("button");
+nxt.className="pg";nxt.textContent="Next ▶";nxt.disabled=(page===total);
+nxt.onclick=function(){page++;render()};
+pg.appendChild(nxt);
+  }
+  /* ---------- INIT ON LOAD ---------- */
+window.addEventListener("load",function(){
+render();
+});
+
+</script>
+
+</body>
+</html>
